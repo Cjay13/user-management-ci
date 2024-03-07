@@ -1,11 +1,12 @@
 package com.cjay.ecom.userManagement.user;
 
 import com.cjay.ecom.userManagement.addressInfo.Address;
-import com.cjay.ecom.userManagement.paymentMethod.PaymentMethod;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -24,18 +25,17 @@ public class User {
             generator = "user_seq_generator"
     )
     private long id;
+
     private String name;
+
     private String userName;
+
     private String email;
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private PaymentMethod defPaymentMethod;
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Address address;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonManagedReference // Prevents infinite recursion7
+    private List<Address> address = new ArrayList<>();
 
-    public String getEmail() {
-        return email;
-    }
 
     public User(String name, String userName, String email) {
         this.name = name;
@@ -43,11 +43,10 @@ public class User {
         this.email = email;
     }
 
-    public User(String name, String userName, String email, PaymentMethod defPaymentMethod, Address address) {
+    public User(String name, String userName, String email, List<Address> address) {
         this.name = name;
         this.userName = userName;
         this.email = email;
-        this.defPaymentMethod = defPaymentMethod;
         this.address = address;
     }
 }
