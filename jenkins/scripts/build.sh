@@ -12,5 +12,6 @@ docker build -t ${DOCKER_REPO}/${APP} -f ${DOCKERFILE} .
 
 docker tag ${DOCKER_REPO}/${APP} ${DOCKER_REPO}/${APP}:v${BUILD_NUMBER}
 docker push ${DOCKER_REPO}/${APP}:v${BUILD_NUMBER}
+
 docker rmi ${DOCKER_REPO}/${APP}
 docker rmi ${DOCKER_REPO}/${APP}:v${BUILD_NUMBER}

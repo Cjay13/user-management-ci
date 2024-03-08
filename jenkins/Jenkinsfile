@@ -44,6 +44,18 @@ pipeline{
 //             }
 //         }
 
+        stage('Authenticate to DockerHub') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'your_credentials_id', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                    sh '''
+                        sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD}
+                    '''
+                }
+
+                )
+            }
+        }
+
         stage('Build and Push Docker Image') {
             steps {
                 script {
