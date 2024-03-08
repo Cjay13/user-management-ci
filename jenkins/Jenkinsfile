@@ -47,6 +47,7 @@ pipeline{
         stage('Build and Push Docker Image') {
             steps {
                 script {
+                    sh 'chmod +x jenkins/scripts/build.sh'
                     sh 'jenkins/scripts/build.sh'
                 }
             }
