@@ -16,9 +16,13 @@ pipeline{
         }
 
         stage('Sonar Analysis') {
+
+            environment {
+                scannerHome = tool 'sonar4'
+            }
             steps {
                 withSonarQubeEnv('cjay-sonar') {
-                    sh '''sonar-scanner -Dsonar.projectKey=cjay-practice-projects_ecom-usermanagement \
+                    sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=cjay-practice-projects_ecom-usermanagement \
                           -Dsonar.projectName=ecom-userManagement \
                           -Dsonar.sources=src/ \
                           -Dsonar.java.binaries=target/test-classes/com/cjay/ecom/userManagement/UserManagementApplicationTests \
