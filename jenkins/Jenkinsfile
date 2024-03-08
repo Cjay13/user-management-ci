@@ -1,0 +1,55 @@
+pipeline{
+    agent any
+    environment {
+        DOCKER_REPO="cjherath"
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                sh 'mvn clean install -DskipTests'
+            }
+        }
+
+        stage('Sonar Analysis') {
+            steps {
+                withSonarQubeEnv('cjay-sonar') {
+                    sh '''sonar-scanner -Dsonar.projectKey=cjay-practice-projects_ecom-usermanagement \
+                          -Dsonar.projectName=ecom-userManagement \
+                          -Dsonar.sources=src/ \
+                          -Dsonar.java.binaries=target/test-classes/com/cjay/ecom/userManagement/UserManagementApplicationTests \
+                          -Dsonar.junit.reportsPath=target/surefire-reports/ \
+                          -Dsonar.jacoco.reportsPath=target/jacoco.exec \
+                          -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
+
+                }
+                timeout(time: 10, unit: 'MINUTES') {
+                waitForQualityGate abortPipeline: true
+            }
+        }
+
+        stage('Build and Push Docker Image') {
+            steps {
+                script {
+                    sh 'jenkins/scripts/build.sh'
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                script {
+                    sh 'jenkins/scripts/deploy.sh'
+                    }
+                }
+            }
+        }
+
+        stage('CleanWS') {
+            steps {
+                cleanWs()
+            }
+        }
+    }
+
+}
