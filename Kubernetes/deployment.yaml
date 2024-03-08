@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecom-user-management
+  labels:
+    app: ecom-user-management
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ecom-user-management
+    template:
+      metadata:
+        labels:
+          app: ecom-user-management
+      spec:
+        container:
+          - name: ecom-user-management
+            image: cjherath/ecomUserManagement
+            ports:
+              - name: ecom-user-management-port
+                port: 8080
