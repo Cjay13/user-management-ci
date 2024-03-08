@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ecom-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: ecom.cjaydevops.xyz
+      http:
+        paths:
+          - path: /cjayecom/v1/user
+            pathType: Prefix
+            backend:
+              service:
+                name: ecom-user-management
+                port:
+                  name: ecom-user-management-port
