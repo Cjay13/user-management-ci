@@ -25,6 +25,7 @@ pipeline{
                 }
                 timeout(time: 10, unit: 'MINUTES') {
                 waitForQualityGate abortPipeline: true
+                }
             }
         }
 
@@ -36,20 +37,10 @@ pipeline{
             }
         }
 
-//         stage('Deploy') {
-//             steps {
-//                 script {
-//                     sh 'jenkins/scripts/deploy.sh'
-//                     }
-//                 }
-//             }
-//         }
-
         stage('CleanWS') {
             steps {
                 cleanWs()
             }
         }
     }
-
 }
