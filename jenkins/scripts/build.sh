@@ -2,7 +2,7 @@
 DOCKERFILE=${WORKSPACE}/Dockerfile
 
 cat ${DOCKERFILE}
-docker build -t ${DOCKER_REPO}/userManagement -f ${DOCKERFILE} .
+docker build -t ${DOCKER_REPO}/usermanagement -f ${DOCKERFILE} .
   if [ $? -ne 0 ]
   then
     echo "docker build failed"
