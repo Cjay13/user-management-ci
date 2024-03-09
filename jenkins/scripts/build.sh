@@ -1,5 +1,5 @@
 #!/bin/bash
-. /env.sh
+. ${WORKSPACE}/jenkins/scripts/env.sh
 DOCKERFILE=${WORKSPACE}/Dockerfile
 
 cat ${DOCKERFILE}
