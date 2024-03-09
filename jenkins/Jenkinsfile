@@ -2,6 +2,7 @@ pipeline{
     agent any
     environment {
         DOCKER_REPO="cjherath"
+        AWS_CREDENTIALS = credentials('AW_ID')
     }
 
     tools {
@@ -66,9 +67,10 @@ pipeline{
 
         stage('Deploy to AWS EKS') {
             steps {
-                script {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AW_ID']]) {
                     sh 'chmod +x jenkins/scripts/deploy.sh' //grant execute permission
                     sh 'jenkins/scripts/deploy.sh'
+
                 }
             }
         }
