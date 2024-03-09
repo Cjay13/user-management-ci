@@ -1,5 +1,5 @@
 #!/bin/bash
-. env.sh
+. ${WORKSPACE}/jenkins/scripts/env.sh
 IMAGE_TAG="v${BUILD_NUMBER}"
 echo $IMAGE_TAG
 echo $DOCKER_REPO
