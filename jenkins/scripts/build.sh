@@ -1,5 +1,5 @@
 #!/bin/bash
-. env.sh
+. /env.sh
 DOCKERFILE=${WORKSPACE}/Dockerfile
 
 cat ${DOCKERFILE}
