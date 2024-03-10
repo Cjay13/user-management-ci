@@ -14,7 +14,7 @@ spec:
       labels:
         app: SERVICE_NAME
     spec:
-      container:
+      containers:
         - name: SERVICE_NAME
           image: DOCKER_REPO/SERVICE_NAME:IMAGE_TAG
           ports:
