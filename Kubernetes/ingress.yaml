@@ -16,4 +16,4 @@ spec:
               service:
                 name: SERVICE_NAME
                 port:
-                  name: SERVICE_NAME-port
+                  number: SERVICE_PORT
