@@ -7,7 +7,7 @@ spec:
     app: SERVICE_NAME
   ports:
     - port: SERVICE_PORT
-      targetPort: SERVICE_NAME-port
+      targetPort: SERVICE_PORT
       protocol: TCP
   type:
     ClusterIP
