@@ -9,14 +9,14 @@ spec:
   selector:
     matchLabels:
       app: SERVICE_NAME
-    template:
-      metadata:
-        labels:
-          app: SERVICE_NAME
-      spec:
-        container:
-          - name: SERVICE_NAME
-            image: DOCKER_REPO/SERVICE_NAME:IMAGE_TAG
-            ports:
-              - name: SERVICE_NAME-port
-                port: SERVICE_PORT
+  template:
+    metadata:
+      labels:
+        app: SERVICE_NAME
+    spec:
+      container:
+        - name: SERVICE_NAME
+          image: DOCKER_REPO/SERVICE_NAME:IMAGE_TAG
+          ports:
+            - name: SERVICE_NAME-port
+              port: SERVICE_PORT
