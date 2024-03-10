@@ -19,4 +19,4 @@ spec:
           image: DOCKER_REPO/SERVICE_NAME:IMAGE_TAG
           ports:
             - name: SERVICE_NAME-port
-              port: SERVICE_PORT
+              containerPort: SERVICE_PORT
