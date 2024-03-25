@@ -73,7 +73,7 @@ pipeline{
                 sh 'chmod +x jenkins/scripts/deploy.sh' //grant execute permission
                 sh 'jenkins/scripts/deploy.sh'
 
-                }
+
             }
         }
 
