@@ -10,6 +10,8 @@ docker build -t ${DOCKER_REPO}/${SERVICE_NAME} -f ${DOCKERFILE} .
     exit 1
   fi
 
+trivy image ${DOCKER_REPO}/${SERVICE_NAME} --format table  -o image-scan-
+
 docker tag ${DOCKER_REPO}/${SERVICE_NAME} ${DOCKER_REPO}/${SERVICE_NAME}:v${BUILD_NUMBER}
 docker push ${DOCKER_REPO}/${SERVICE_NAME}:v${BUILD_NUMBER}
 

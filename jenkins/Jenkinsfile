@@ -2,49 +2,53 @@ pipeline{
     agent any
     environment {
         DOCKER_REPO="cjherath"
+        SCANNER_HOME = tool 'sonar-scanner'
         //AWS_CREDENTIALS = credentials('AWS_ID')
     }
 
     tools {
+        jdk "jdk17"
         maven "MAVEN3"
     }
 
     stages {
+        stage('Unit  test'){
+            steps {
+                sh 'mvn test'
+            }
+        }
+
+        stage('Vulnerability scan') {
+            steps {
+                sh "trivy fs --format table -o trivy-fs-report.html ." 
+            }
+        }
+
+        stage('Sonarqube Analysis') {
+            steps {
+                withSonarQubeEnv('sonar') {
+                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=ecom_crm \
+                            -Dsonar.projectKey=ecom_crm \
+                            -Dsonar.java.binaries=. ''' 
+                }
+            }
+        }
+
+        stage('Quality Gate') {
+            steps {
+                script{
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
+                }
+            }
+        }
+
         stage('Build') {
             steps {
                 sh 'mvn clean install -DskipTests'
             }
         }
 
-//         stage('Unit  test'){
-//             steps {
-//                 sh 'mvn test'
-//             }
-//         }
-//
-//         stage('Sonar Analysis') {
-//
-//             environment {
-//                 scannerHome = tool 'sonar4'
-//             }
-//             steps {
-//                 withSonarQubeEnv('cjay-sonar') {
-//                     sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=cjay-practice-projects_ecom-usermanagement \
-//                           -Dsonar.organization=cjay-practice-projects \
-//                           -Dsonar.projectName=ecom-userManagement \
-//                           -Dsonar.sources=src/ \
-//                           -Dsonar.java.binaries=target/test-classes/com/cjay/ecom/userManagement/UserManagementApplicationTests \
-//                           -Dsonar.junit.reportsPath=target/surefire-reports/ \
-//                           -Dsonar.jacoco.reportsPath=target/jacoco.exec \
-//                           -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
-//
-//                 }
-//                 timeout(time: 10, unit: 'MINUTES') {
-//                 waitForQualityGate abortPipeline: true
-//                 }
-//             }
-//         }
-
+    
         stage('Authenticate to DockerHub') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_ID', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
