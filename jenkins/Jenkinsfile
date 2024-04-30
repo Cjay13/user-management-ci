@@ -71,9 +71,9 @@ pipeline{
 
         stage('Deploy to K8s') {
             steps {
-                script {
-                    env.KUBECONFIG = 'Kubernetes/kubeconfig'
-                }
+                // script {
+                //     env.KUBECONFIG = 'Kubernetes/kubeconfig'
+                // }
                 sh 'chmod +x jenkins/scripts/deploy.sh' //grant execute permission
                 sh 'jenkins/scripts/deploy.sh'
 
