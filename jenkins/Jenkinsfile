@@ -81,10 +81,10 @@ pipeline{
             }
         }
 
-        stage('CleanWS') {
-            steps {
-                cleanWs()
-            }
-        }
+        // stage('CleanWS') {
+        //     steps {
+        //         cleanWs()
+        //     }
+        // }
     }
 }
