@@ -45,13 +45,13 @@ jobs:
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5.0.0
         with:
-          projectBaseDir: app/src
+          projectBaseDir: .
           args: >
             -Dsonar.organization=cjay-practice-projects
             -Dsonar.projectKey=userManagement
             -Dsonar.python.coverage.reportPaths=coverage.xml
-            -Dsonar.sources=lib/
-            -Dsonar.tests=tests/
+            -Dsonar.sources=src/main/java
+            -Dsonar.tests=src/test/java
             -Dsonar.test.exclusions=tests/**
             -Dsonar.verbose=true
         env:
