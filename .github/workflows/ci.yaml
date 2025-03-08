@@ -51,6 +51,7 @@ jobs:
             -Dsonar.projectKey=cjay-practice-projects_ecom-usermanagement
             -Dsonar.python.coverage.reportPaths=coverage.xml
             -Dsonar.sources=src/main/java
+            -Dsonar.java.binaries=target/classes
             -Dsonar.tests=src/test/java
             -Dsonar.test.exclusions=tests/**
             -Dsonar.verbose=true
