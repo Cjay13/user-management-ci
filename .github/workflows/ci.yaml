@@ -48,7 +48,7 @@ jobs:
           projectBaseDir: .
           args: >
             -Dsonar.organization=cjay-practice-projects
-            -Dsonar.projectKey=userManagement
+            -Dsonar.projectKey=cjay-practice-projects_ecom-usermanagement
             -Dsonar.python.coverage.reportPaths=coverage.xml
             -Dsonar.sources=src/main/java
             -Dsonar.tests=src/test/java
