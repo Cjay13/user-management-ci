@@ -60,11 +60,15 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
+      - name: Get Commit SHA
+        id: commit
+        run: echo "COMMIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
       - name: Docker Build
         run: |
           COMMIT_SHA=$(git rev-parse --short HEAD)
-          docker build -t $DOCKER_IMAGE .
-          docker tag $DOCKER_IMAGE:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO_NAME:$COMMIT_SHA
+          docker build -t $DOCKER_IMAGE:$COMMIT_SHA .
+          docker tag $DOCKER_IMAGE:$COMMIT_SHA $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO_NAME:$COMMIT_SHA
 
       - name: debug
         run: docker images
@@ -75,7 +79,7 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.28.0
         with:
-          image-ref: "${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPO_NAME }}:$COMMIT_SHA"
+          image-ref: "${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPO_NAME }}:${{ env.COMMIT_SHA }}"
           format: 'table'
           exit-code: '1'
           ignore-unfixed: true
