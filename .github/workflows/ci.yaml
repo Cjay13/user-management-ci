@@ -17,6 +17,10 @@ env:
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
   DOCKER_IMAGE: user-management
+  CD_REPO: git@github.com:Cjay13/user-management-cd.git
+  CD_BRANCH: main
+  VALUES_FILE: user-management-helm/values.yaml
+  
 
 jobs:
   build:
@@ -66,7 +70,6 @@ jobs:
 
       - name: Docker Build
         run: |
-          COMMIT_SHA=$(git rev-parse --short HEAD)
           docker build -t $DOCKER_IMAGE:$COMMIT_SHA .
           docker tag $DOCKER_IMAGE:$COMMIT_SHA $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO_NAME:$COMMIT_SHA
 
@@ -89,4 +92,33 @@ jobs:
       - name: Push Docker image to Amazon ECR
         run: |
           docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO_NAME:$COMMIT_SHA
+
+      - name: Setup SSH Key
+        run:  
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PVT_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+      - name: Update values.yaml
+        run: |
+  
+          IMAGE_TAG=$COMMIT_SHA
+                  
+          git clone $CD_REPO cd-repo
+          cd cd-repo
+          
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+
+          sed -i "s|tag: .*|tag: \"${IMAGE_TAG}\"|" $VALUES_FILE
+
+          git add $VALUES_FILE
+          git commit -m "Updated image tag to ${IMAGE_TAG}"
+          git push origin $CD_BRANCH
+        
+
+          
+          
+          
         
