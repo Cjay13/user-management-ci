@@ -6,11 +6,15 @@ on:
     - main
     paths:
     - src/main/**
+    - Dockerfile
+    - pom.xml
   pull_request:
     branches:
     - main
     paths:
     - src/main/**
+    - Dockerfile
+    - pom.xml
 
 permissions:
   id-token: write
@@ -22,7 +26,6 @@ env:
   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
   AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-  DOCKER_IMAGE: user-management
   CD_REPO: git@github.com:Cjay13/user-management-cd.git
   CD_BRANCH: main
   VALUES_FILE: user-management-helm/values.yaml

@@ -1,0 +1,13 @@
+target/
+
+*.iml
+*.idea/
+*.vscode/
+
+*.log
+
+*.env
+secrets/
+config/
+
+Dockerfile
